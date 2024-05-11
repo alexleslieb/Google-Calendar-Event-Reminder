@@ -24,15 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Handlers\" />
-    <Folder Include="Application\Responses\" />
-    <Folder Include="Application\Requests\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Credentials\google_api_credentials.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Credentials\google_calendar_credentials.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
