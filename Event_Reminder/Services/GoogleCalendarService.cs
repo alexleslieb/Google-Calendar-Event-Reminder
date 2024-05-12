@@ -35,9 +35,6 @@ namespace Event_Reminder.Services
             if (!Directory.Exists(tokenPath))
                 Directory.CreateDirectory(tokenPath);
 
-            string tokenFilePath = Path.Combine(tokenPath, "google_calendar_token.json");
-
-
             using(var stream = new FileStream(credentialPath, FileMode.Open, FileAccess.Read))
             {
                 _userCredential = GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -45,10 +42,10 @@ namespace Event_Reminder.Services
                     _scopes,
                     _configurationRoot.GetValue<string>("UserName"),
                     CancellationToken.None,
-                    new FileDataStore(tokenFilePath, true)
+                    new FileDataStore(tokenPath, true)
                     ).Result;
 
-                Console.WriteLine($"Google Calendar token file saved to {tokenFilePath}");
+                Console.WriteLine($"Google Calendar token file saved to {tokenPath}");
             }
 
             _calendarService = new CalendarService(new Google.Apis.Services.BaseClientService.Initializer
