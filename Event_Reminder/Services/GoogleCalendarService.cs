@@ -30,7 +30,7 @@ namespace Event_Reminder.Services
 
             string tokenPath = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "", 
-                "Tokens");
+                "Tokens/CalendarToken");
 
             if (!Directory.Exists(tokenPath))
                 Directory.CreateDirectory(tokenPath);
@@ -57,7 +57,16 @@ namespace Event_Reminder.Services
 
         public void GetEvents()
         {
+            EventsResource.ListRequest request = _calendarService.Events.List("primary");
+            request.TimeMinDateTimeOffset = DateTime.Now;
+            request.TimeMaxDateTimeOffset = DateTime.Now.AddDays(7);
+            request.ShowDeleted = false;
 
+            Google.Apis.Calendar.v3.Data.Events events = request.Execute();
+            if(events.Items.Any())
+            {
+
+            }
         }
     }
 }
