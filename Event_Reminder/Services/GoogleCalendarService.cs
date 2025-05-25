@@ -1,6 +1,7 @@
 ﻿using Event_Reminder.Interfaces;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
+using Google.Apis.Calendar.v3.Data;
 using Google.Apis.Util.Store;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
@@ -30,7 +31,7 @@ namespace Event_Reminder.Services
 
             string tokenPath = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "", 
-                "Tokens/CalendarToken");
+                "Tokens");
 
             if (!Directory.Exists(tokenPath))
                 Directory.CreateDirectory(tokenPath);
@@ -55,18 +56,15 @@ namespace Event_Reminder.Services
             });
         }
 
-        public void GetEvents()
+        public async Task<IList<Event>> GetEventsAsync(int days)
         {
             EventsResource.ListRequest request = _calendarService.Events.List("primary");
             request.TimeMinDateTimeOffset = DateTime.Now;
-            request.TimeMaxDateTimeOffset = DateTime.Now.AddDays(7);
+            request.TimeMaxDateTimeOffset = DateTime.Now.AddDays(days);
             request.ShowDeleted = false;
 
-            Google.Apis.Calendar.v3.Data.Events events = request.Execute();
-            if(events.Items.Any())
-            {
-
-            }
+            Events events = await request.ExecuteAsync();
+            return events.Items;
         }
     }
 }
